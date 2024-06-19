@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kundenverwaltung</title>
+</head>
+<body>
+    <form action="kunden.php" method="post">
+        <!-- Kundeninformationen -->
+        <label for="vorname">Vorname:</label><br>
+        <input type="text" id="vorname" name="vorname" required><br>
+        <label for="nachname">Nachname:</label><br>
+        <input type="text" id="nachname" name="nachname" required><br><br>
+        
+        <!-- Rechnungsadresse -->
+        <h3>Rechnungsadresse</h3>
+        <label for="rechnung_strasse">Straße:</label><br>
+        <input type="text" id="rechnung_strasse" name="rechnung_strasse" required><br>
+        <label for="rechnung_stadt">Stadt:</label><br>
+        <input type="text" id="rechnung_stadt" name="rechnung_stadt" required><br>
+        <label for="rechnung_plz">PLZ:</label><br>
+        <input type="text" id="rechnung_plz" name="rechnung_plz" required><br>
+        <label for="rechnung_land">Land:</label><br>
+        <input type="text" id="rechnung_land" name="rechnung_land" required><br><br>
+        
+        <!-- Versandadresse -->
+        <h3>Versandadresse</h3>
+        <label for="versand_strasse">Straße:</label><br>
+        <input type="text" id="versand_strasse" name="versand_strasse" required><br>
+        <label for="versand_stadt">Stadt:</label><br>
+        <input type="text" id="versand_stadt" name="versand_stadt" required><br>
+        <label for="versand_plz">PLZ:</label><br>
+        <input type="text" id="versand_plz" name="versand_plz" required><br>
+        <label for="versand_land">Land:</label><br>
+        <input type="text" id="versand_land" name="versand_land" required><br><br>
+        
+        <input type="submit" value="Kunden hinzufügen">
+    </form>
+</body>
+</html>
