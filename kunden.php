@@ -1,6 +1,6 @@
 <?php
 // Datenbankverbindung
-$pdo = new PDO('mysql:host=localhost;dbname=ffshop', 'root', 'root');
+$pdo = new PDO('mysql:host=localhost;dbname=ffshop', 'root', 'root'); //Passwort an mysql server anpassen
 
 if (isset($_POST['vorname'], $_POST['nachname'])) {
     // Kunden hinzufügen
