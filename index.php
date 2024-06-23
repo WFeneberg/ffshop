@@ -1,3 +1,81 @@
+<?php
+global $kunden_id;
+global $Meldungen;
+
+
+$pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
+// Verbindung zur Datenbank
+
+$artikel = $pdo->query("SELECT * FROM lager")->fetchAll();
+
+
+if (isset($_POST['KundenName'], $_POST['Passwort'])) {
+	
+	// 	Kunden hinzufügen
+	$stmt = $pdo->prepare("INSERT INTO kunden (KundenName, Passwort) VALUES (:KundenName, :Passwort)");
+	
+	$stmt->execute([':KundenName' => $_POST['KundenName'], ':Passwort' =>$_POST['Passwort']]);
+	
+	$kunden_id = $pdo->lastInsertId();
+	
+	// 	Rechnungsadresse hinzufügen
+	$stmt = $pdo->prepare("INSERT INTO adressen (KundenID, Strasse, Stadt, Plz, Land, AdressTyp) VALUES (:KundenID, :strasse, :stadt, :plz, :land, 'Rechnung')");
+	
+	$stmt->execute([
+	':KundenID' => $kunden_id,
+	':strasse' => $_POST['rechnung_strasse'],
+	':stadt' => $_POST['rechnung_stadt'],
+	':plz' => $_POST['rechnung_plz'],
+	':land' => $_POST['rechnung_land']
+	]);
+	
+	
+	// 	Versandadresse hinzufügen
+	$stmt = $pdo->prepare("INSERT INTO adressen (KundenID, Strasse, Stadt, Plz, Land, AdressTyp) VALUES (:KundenID, :strasse, :stadt, :plz, :land, 'Versand')");
+	
+	$stmt->execute([
+	':KundenID' => $kunden_id,
+	':strasse' => $_POST['versand_strasse'],
+	':stadt' => $_POST['versand_stadt'],
+	':plz' => $_POST['versand_plz'],
+	':land' => $_POST['versand_land']
+	]);
+	
+	
+	echo "Kunde und Adressen hinzugefügt.";
+	
+}
+
+
+if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
+	
+	// 	Beim Anmelden
+	$eingegebenesPasswort = $_POST['LoginPasswort'];
+	// 	Das vom Benutzer beim Anmelden eingegebene Passwort
+	$stmt = $pdo->prepare("Select KundenID, Passwort FROM kunden WHERE KundenName = :LoginKundenName");
+	
+	$stmt->execute(['LoginKundenName' => $_POST['LoginKundenName']]);
+	
+	$user = $stmt->fetch();
+	// 	Benutzerdaten aus der Datenbank abrufen
+	$gespeichertesPasswort = $user['Passwort'];
+	// 	Das in der Datenbank gespeicherte Passwort
+	$kunden_id = $user['KundenID'];
+	// 	Die Kunden-ID des Benutzers
+	if ($eingegebenesPasswort === $gespeichertesPasswort) {
+		$Meldungen = "Anmeldung erfolgreich.";
+	}
+	else {
+		
+		$Meldungen =  "Anmeldung fehlgeschlagen.";
+		
+	}
+	
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="de">
 
@@ -66,13 +144,13 @@
 </head>
 
 <body>
-  <?php include 'data.php'; ?>
   <nav id="menu">
     <ul>
       <li><a href="#" onclick="showHome()">Home</a></li>
       <li><a href="#" onclick="showWarenkorb()">Warenkorb</a></li>
       <li><a href="#" onclick="showKonto()">Konto</a></li>
       <li><a href="#" onclick="showLogin()">Anmeldung</a></li>
+      <li><a href="#" onclick="showAdmin()">Verwaltung</a></li>
     </ul>
   </nav>
 
@@ -112,7 +190,53 @@
       <h1>Hier können Konto auswählen</h1>
     </div>
     <div id="login">
-      <h1>Hier können login auswählen</h1>
+      <h1>Anmelden</h1>
+      <form action="" method="post">
+        <div>
+            <label for="LoginKundenName">Benutzername:</label>
+            <input type="text" id="LoginKundenName" name="LoginKundenName" required>
+        </div>
+        <div>
+            <label for="LoginPasswort">Passwort:</label>
+            <input type="password" id="LoginPasswort" name="LoginPasswort" required>
+        </div>
+        <button type="submit">Anmelden</button>
+      </form>
+      <h1>Neukunden Registrierung:</h1>
+      <form action="" method="post">
+        <!-- Kundeninformationen -->
+        <label for="KundenName">Kundenname:</label><br>
+        <input type="text" id="KundenName" name="KundenName" required><br>
+        <label for="Passwort">Passwort:</label><br>
+        <input type="text" id="Passwort" name="Passwort" required><br><br>
+        
+        <!-- Rechnungsadresse -->
+        <h3>Rechnungsadresse</h3>
+        <label for="rechnung_strasse">Straße:</label><br>
+        <input type="text" id="rechnung_strasse" name="rechnung_strasse" required><br>
+        <label for="rechnung_stadt">Stadt:</label><br>
+        <input type="text" id="rechnung_stadt" name="rechnung_stadt" required><br>
+        <label for="rechnung_plz">PLZ:</label><br>
+        <input type="text" id="rechnung_plz" name="rechnung_plz" required><br>
+        <label for="rechnung_land">Land:</label><br>
+        <input type="text" id="rechnung_land" name="rechnung_land" required><br><br>
+        
+        <!-- Versandadresse -->
+        <h3>Versandadresse</h3>
+        <label for="versand_strasse">Straße:</label><br>
+        <input type="text" id="versand_strasse" name="versand_strasse" required><br>
+        <label for="versand_stadt">Stadt:</label><br>
+        <input type="text" id="versand_stadt" name="versand_stadt" required><br>
+        <label for="versand_plz">PLZ:</label><br>
+        <input type="text" id="versand_plz" name="versand_plz" required><br>
+        <label for="versand_land">Land:</label><br>
+        <input type="text" id="versand_land" name="versand_land" required><br><br>
+        
+        <input type="submit" value="Kunden hinzufügen">
+    </form>
+    </div>
+    <div id="admin">
+      <h1>Hier können admin auswählen</h1>
     </div>
   </div>
 
@@ -146,6 +270,11 @@
       document.getElementById('login').style.display = 'block';
     }
 
+    function showAdmin() {
+      hideAll();
+      document.getElementById('admin').style.display = 'block';
+    }
+
     function hideAll() {
       var sections = document.querySelectorAll('#content > div');
       sections.forEach(function(section) {
@@ -163,4 +292,10 @@
       showHome();
     }
   </script>
+  <footer>
+    <div class="footer-content">
+        <p>Kunden-ID: <?= isset($kunden_id) ? htmlspecialchars($kunden_id) : 'Nicht verfügbar'; ?></p>
+        <p>Meldungen: <?= isset($Meldungen) ? htmlspecialchars($Meldungen) : 'Keine Meldungen'; ?></p>
+    </div>
+</footer>
 </body
