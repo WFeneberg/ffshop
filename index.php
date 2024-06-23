@@ -190,9 +190,9 @@ if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
     <div id="warenkorb">
       <h1>Hier ist Ihr Warenkorb</h1>
     </div>
-    <div id="konto">
+    <!--<div id="konto">
       <h1>Hier können Konto auswählen</h1>
-    </div>
+    </div> -->
     <div id="login">
       <h1>Anmelden</h1>
       <form action="" method="post">
@@ -239,12 +239,13 @@ if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
         <input type="submit" value="Kunden hinzufügen">
     </form>
     </div>
-    <div id="admin">
+    <!--<div id="admin">
       <h1>Hier können admin auswählen</h1>
-    </div>
+    </div> -->
   </div>
 
   <script>
+    showHome();
     function updatemenu() {
       if (document.getElementById('responsive-menu').checked) {
         document.getElementById('menu').style.borderBottomRightRadius = '0';
