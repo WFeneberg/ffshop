@@ -66,7 +66,7 @@
 </head>
 
 <body>
-
+  <?php include 'data.php'; ?>
   <nav id="menu">
     <ul>
       <li><a href="#" onclick="showHome()">Home</a></li>
@@ -79,6 +79,31 @@
   <div id="content">
     <div id="home">
       <h1>Willkommen auf der Home-Seite!</h1>
+      <h2>Vorhandene Artikel</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Preis</th>
+            <th>Kategorie</th>
+            <th>Aktionen</th>
+        </tr>
+        <?php foreach ($artikel as $a): ?>
+        <tr>
+            <td><?= htmlspecialchars($a['ProduktID']) ?></td>
+            <td><?= htmlspecialchars($a['Produkt']) ?></td>
+            <td><?= htmlspecialchars($a['Preis']) ?></td>
+            <td><?= htmlspecialchars($a['KategorieID']) ?></td>
+            <td>
+                <form action="" method="post">
+                    <input type="hidden" name="aktion" value="order">
+                    <input type="hidden" name="ProduktID" value="<?= $a['ProduktID'] ?>">
+                    <button type="submit">Bestellen</button>
+                </form>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
     </div>
     <div id="warenkorb">
       <h1>Hier ist Ihr Warenkorb</h1>
