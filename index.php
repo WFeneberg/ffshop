@@ -8,6 +8,8 @@ $pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
 
 $artikel = $pdo->query("SELECT * FROM lager")->fetchAll();
 
+$warenkorb = $pdo->query("SELECT * FROM warenkorb")->fetchAll();
+
 
 if (isset($_POST['KundenName'], $_POST['Passwort'])) {
 	
@@ -74,9 +76,40 @@ if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
 		
 	}
 }
-	
+
 }
 
+function saveToCart($kundenID, $produktID) {
+  $pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
+// Verbindung zur Datenbank
+  // Überprüfen, ob das Produkt bereits im Warenkorb des Benutzers ist
+  $stmt = $pdo->prepare("SELECT * FROM warenkorb WHERE KundenID  = :KundenID  AND ProduktID = :produktID");
+  $stmt->execute(['KundenID' => $kundenID, 'produktID' => $produktID]);
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  //var_dump($result['anzahl']);
+  //$Meldungen = $result;
+  if ($result) {
+    // Wenn das Produkt bereits vorhanden ist, erhöhe die Anzahl
+    //$neueAnzahl = $result['anzahl'] + 1;
+    //$updateStmt = $pdo->prepare("UPDATE warenkorb SET anzahl = :anzahl WHERE KundenID  = :KundenID AND ProduktID = :produktID");
+    //$updateStmt->execute(['anzahl' => $neueAnzahl, 'KundenID' => $kundenID, 'produktID' => $produktID]);
+  } else {
+    // Wenn das Produkt noch nicht im Warenkorb ist, füge es hinzu
+    $insertStmt = $pdo->prepare("INSERT INTO warenkorb (KundenID , ProduktID, anzahl) VALUES (:KundenID, :produktID, 1)");
+    $insertStmt->execute(['KundenID' => $kundenID, 'produktID' => $produktID]);
+  }
+}
+
+if (isset($_POST['aktion']) && $_POST['aktion'] === 'order') {
+  
+  $produktID = $_POST['ProduktID'];
+  $kunden_id = $_POST['kunden_id'];
+
+   saveToCart($kunden_id, $produktID);
+  
+    //$Meldungen = "Produkt wurde zum Warenkorb hinzugefügt.";
+  
+}
 
 ?>
 
@@ -152,13 +185,14 @@ if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
     <ul>
       <li><a href="#" onclick="showHome()">Home</a></li>
       <li><a href="#" onclick="showWarenkorb()">Warenkorb</a></li>
-      <li><a href="#" onclick="showKonto()">Konto</a></li>
+      <!--<li><a href="#" onclick="showKonto()">Konto</a></li>-->
       <li><a href="#" onclick="showLogin()">Anmeldung</a></li>
-      <li><a href="#" onclick="showAdmin()">Verwaltung</a></li>
+      <!--<li><a href="#" onclick="showAdmin()">Verwaltung</a></li>-->
     </ul>
   </nav>
 
   <div id="content">
+  
     <div id="home">
       <h1>Willkommen auf der Home-Seite!</h1>
       <h2>Vorhandene Artikel</h2>
@@ -179,6 +213,7 @@ if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
             <td>
                 <form action="" method="post">
                     <input type="hidden" name="aktion" value="order">
+                    <input type="hidden" id="kunden_id" name="kunden_id" value="<?= isset($kunden_id) ? htmlspecialchars($kunden_id) : ''; ?>">
                     <input type="hidden" name="ProduktID" value="<?= $a['ProduktID'] ?>">
                     <button type="submit">Bestellen</button>
                 </form>
@@ -188,7 +223,31 @@ if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
     </table>
     </div>
     <div id="warenkorb">
-      <h1>Hier ist Ihr Warenkorb</h1>
+    <h2>Vorhander Warenkorb</h2>
+    <table>
+        <tr>
+            <th>Kunde</th>
+            <th>Produkt</th>
+            <th>Zahlungsart</th>
+            <th>Anzahl</th>
+        </tr>
+        <?php foreach ($warenkorb as $a): ?>
+        <tr>
+            <td><?= htmlspecialchars($a['KundenID']) ?></td>
+            <td><?= htmlspecialchars($a['ProduktID']) ?></td>
+            <td><?= htmlspecialchars($a['PayId']) ?></td>
+            <td><?= htmlspecialchars($a['Anzahl']) ?></td>
+            <td>
+                <form action="" method="post">
+                    <input type="hidden" name="aktion" value="delete">
+                    <input type="hidden" id="kunden_id" name="kunden_id" value="<?= isset($kunden_id) ? htmlspecialchars($kunden_id) : ''; ?>">
+                    <input type="hidden" name="ProduktID" value="<?= $a['ProduktID'] ?>">
+                    <button type="submit">Löschen</button>
+                </form>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
     </div>
     <!--<div id="konto">
       <h1>Hier können Konto auswählen</h1>
