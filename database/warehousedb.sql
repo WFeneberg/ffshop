@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 23. Jun 2024 um 09:20
+-- Erstellungszeit: 20. Jun 2024 um 11:14
 -- Server-Version: 10.4.32-MariaDB
 -- PHP-Version: 8.2.12
 
@@ -20,22 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Datenbank: `warehousedb`
 --
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `adressen`
---
-
-CREATE TABLE `adressen` (
-  `AdressID` int(11) NOT NULL,
-  `KundenID` int(11) DEFAULT NULL,
-  `Strasse` varchar(255) NOT NULL,
-  `Stadt` varchar(255) NOT NULL,
-  `Plz` varchar(10) NOT NULL,
-  `Land` varchar(255) NOT NULL,
-  `AdressTyp` enum('Rechnung','Versand') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -151,13 +135,6 @@ INSERT INTO `zahlung` (`PayID`, `ZM`) VALUES
 --
 
 --
--- Indizes für die Tabelle `adressen`
---
-ALTER TABLE `adressen`
-  ADD PRIMARY KEY (`AdressID`),
-  ADD KEY `KundenID` (`KundenID`);
-
---
 -- Indizes für die Tabelle `kategorie`
 --
 ALTER TABLE `kategorie`
@@ -195,12 +172,6 @@ ALTER TABLE `zahlung`
 --
 
 --
--- AUTO_INCREMENT für Tabelle `adressen`
---
-ALTER TABLE `adressen`
-  MODIFY `AdressID` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT für Tabelle `kategorie`
 --
 ALTER TABLE `kategorie`
@@ -227,12 +198,6 @@ ALTER TABLE `zahlung`
 --
 -- Constraints der exportierten Tabellen
 --
-
---
--- Constraints der Tabelle `adressen`
---
-ALTER TABLE `adressen`
-  ADD CONSTRAINT `adressen_ibfk_1` FOREIGN KEY (`KundenID`) REFERENCES `kunden` (`KundenID`);
 
 --
 -- Constraints der Tabelle `lager`
