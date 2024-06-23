@@ -95,9 +95,9 @@ function saveToCart($kundenID, $produktID, $pay_id) {
   //$Meldungen = $result;
   if ($result) {
     // Wenn das Produkt bereits vorhanden ist, erhöhe die Anzahl
-    //$neueAnzahl = $result['anzahl'] + 1;
-    //$updateStmt = $pdo->prepare("UPDATE warenkorb SET anzahl = :anzahl WHERE KundenID  = :KundenID AND ProduktID = :produktID");
-    //$updateStmt->execute(['anzahl' => $neueAnzahl, 'KundenID' => $kundenID, 'produktID' => $produktID]);
+    $neueAnzahl = $result['Anzahl'] + 1;
+    $updateStmt = $pdo->prepare("UPDATE warenkorb SET anzahl = :anzahl WHERE KundenID  = :KundenID AND ProduktID = :produktID");
+    $updateStmt->execute(['anzahl' => $neueAnzahl, 'KundenID' => $kundenID, 'produktID' => $produktID]);
   } else {
     // Wenn das Produkt noch nicht im Warenkorb ist, füge es hinzu
     $insertStmt = $pdo->prepare("INSERT INTO warenkorb (KundenID , ProduktID, anzahl, PayID) VALUES (:KundenID, :produktID, 1, :pay_id)");
@@ -110,10 +110,10 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'order') {
   $produktID = $_POST['ProduktID'];
   $kunden_id = $_POST['kunden_id'];
   $pay_id = $_POST['pay_id'];
-  var_dump($pay_id);
-   saveToCart($kunden_id, $produktID, $pay_id);
+
+  saveToCart($kunden_id, $produktID, $pay_id);
   
-    //$Meldungen = "Produkt wurde zum Warenkorb hinzugefügt.";
+  $Meldungen = "Produkt wurde zum Warenkorb hinzugefügt.";
   
 }
 
