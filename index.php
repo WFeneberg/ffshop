@@ -15,6 +15,8 @@ $warenkorb = $pdo->query("SELECT warenkorb.*, lager.Produkt, lager.Preis, warenk
 
 $payments = $pdo->query("SELECT * FROM zahlung")->fetchAll();
 
+$alleKunden = $pdo->query("SELECT * FROM kunden")->fetchAll();
+
 
 if (isset($_POST['KundenName'], $_POST['Passwort'], $_POST['paiid'])) {
 
@@ -130,6 +132,9 @@ function deletefromCart($kundenID, $produktID) {
   $pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
 // Verbindung zur Datenbank
   // Überprüfen, ob das Produkt bereits im Warenkorb des Benutzers ist
+
+
+
   $stmt = $pdo->prepare("DELETE FROM warenkorb WHERE KundenID = :KundenID AND ProduktID = :produktID");
   $stmt->execute(['KundenID' => $kundenID, 'produktID' => $produktID]);
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -142,6 +147,34 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'delete') {
   $kunden_id = $_POST['kunden_id'];
 
   deletefromCart($kunden_id, $produktID);
+  
+  $Meldungen = "Produkt wurde zum Warenkorb hinzugefügt.";
+  
+}
+
+function deletecustomer($kundenID) {
+  $pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
+
+  $stmt = $pdo->prepare("DELETE FROM warenkorb WHERE KundenID = :KundenID");
+  $stmt->execute(['KundenID' => $kundenID]);
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  $stmt = $pdo->prepare("DELETE FROM adressen WHERE KundenID = :KundenID");
+  $stmt->execute(['KundenID' => $kundenID]);
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+  $stmt = $pdo->prepare("DELETE FROM kunden WHERE KundenID = :KundenID");
+  $stmt->execute(['KundenID' => $kundenID]);
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+}
+
+if (isset($_POST['aktion']) && $_POST['aktion'] === 'custdelete') {
+  
+  $kunden_id = $_POST['kunden_id'];
+
+  deleteCustomer($kunden_id);
   
   $Meldungen = "Produkt wurde zum Warenkorb hinzugefügt.";
   
@@ -223,7 +256,7 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'delete') {
       <li><a href="#" onclick="showWarenkorb()">Warenkorb</a></li>
       <!--<li><a href="#" onclick="showKonto()">Konto</a></li>-->
       <li><a href="#" onclick="showLogin()">Anmeldung</a></li>
-      <!--<li><a href="#" onclick="showAdmin()">Verwaltung</a></li>-->
+      <li><a href="#" onclick="showAdmin()">Verwaltung</a></li>
     </ul>
   </nav>
 
@@ -352,9 +385,28 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'delete') {
         <input type="submit" value="Kunden hinzufügen">
     </form>
     </div>
-    <!--<div id="admin">
-      <h1>Hier können admin auswählen</h1>
-    </div> -->
+    <div id="admin">
+      <h1>Alle Kunden</h1>
+      <table>
+        <tr>
+            <th>KundenID</th>
+            <th>Kundenname</th>
+        </tr>
+        <?php foreach ($alleKunden as $a): ?>
+        <tr>
+            <td><?= htmlspecialchars($a['KundenID']) ?></td>
+            <td><?= htmlspecialchars($a['KundenName']) ?></td>
+            <td>
+                <form action="" method="post">
+                    <input type="hidden" name="aktion" value="custdelete">
+                    <input type="hidden" id="kunden_id" name="kunden_id" value="<?= isset($a['KundenID']) ? htmlspecialchars($a['KundenID']) : ''; ?>">
+                    <button type="submit">Löschen</button>
+                </form>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+    </div>
   </div>
 
   <script>
