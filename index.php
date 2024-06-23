@@ -1,5 +1,6 @@
 <?php
 global $kunden_id;
+global $pay_id;
 global $Meldungen;
 
 
@@ -10,13 +11,16 @@ $artikel = $pdo->query("SELECT * FROM lager")->fetchAll();
 
 $warenkorb = $pdo->query("SELECT * FROM warenkorb")->fetchAll();
 
+$payments = $pdo->query("SELECT * FROM zahlung")->fetchAll();
 
-if (isset($_POST['KundenName'], $_POST['Passwort'])) {
-	
+
+if (isset($_POST['KundenName'], $_POST['Passwort'], $_POST['paiid'])) {
+
+  $pay_id =  $_POST['paiid'];
 	// 	Kunden hinzufügen
-	$stmt = $pdo->prepare("INSERT INTO kunden (KundenName, Passwort) VALUES (:KundenName, :Passwort)");
+	$stmt = $pdo->prepare("INSERT INTO kunden (KundenName, Passwort, PayID) VALUES (:KundenName, :Passwort, :PayID)");
 	
-	$stmt->execute([':KundenName' => $_POST['KundenName'], ':Passwort' =>$_POST['Passwort']]);
+	$stmt->execute([':KundenName' => $_POST['KundenName'], ':Passwort' =>$_POST['Passwort'], ':PayID' => $_POST['paiid']]);
 	
 	$kunden_id = $pdo->lastInsertId();
 	
@@ -66,6 +70,7 @@ if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
 	$gespeichertesPasswort = $user['Passwort'];
 	// 	Das in der Datenbank gespeicherte Passwort
 	$kunden_id = $user['KundenID'];
+  $pay_id = $user['PayID'];
 	// 	Die Kunden-ID des Benutzers
 	if ($eingegebenesPasswort === $gespeichertesPasswort) {
 		$Meldungen = "Anmeldung erfolgreich.";
@@ -79,7 +84,7 @@ if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
 
 }
 
-function saveToCart($kundenID, $produktID) {
+function saveToCart($kundenID, $produktID, $pay_id) {
   $pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
 // Verbindung zur Datenbank
   // Überprüfen, ob das Produkt bereits im Warenkorb des Benutzers ist
@@ -95,8 +100,8 @@ function saveToCart($kundenID, $produktID) {
     //$updateStmt->execute(['anzahl' => $neueAnzahl, 'KundenID' => $kundenID, 'produktID' => $produktID]);
   } else {
     // Wenn das Produkt noch nicht im Warenkorb ist, füge es hinzu
-    $insertStmt = $pdo->prepare("INSERT INTO warenkorb (KundenID , ProduktID, anzahl) VALUES (:KundenID, :produktID, 1)");
-    $insertStmt->execute(['KundenID' => $kundenID, 'produktID' => $produktID]);
+    $insertStmt = $pdo->prepare("INSERT INTO warenkorb (KundenID , ProduktID, anzahl, PayID) VALUES (:KundenID, :produktID, 1, :pay_id)");
+    $insertStmt->execute(['KundenID' => $kundenID, 'produktID' => $produktID, 'pay_id' => $pay_id]);
   }
 }
 
@@ -104,8 +109,9 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'order') {
   
   $produktID = $_POST['ProduktID'];
   $kunden_id = $_POST['kunden_id'];
-
-   saveToCart($kunden_id, $produktID);
+  $pay_id = $_POST['pay_id'];
+  var_dump($pay_id);
+   saveToCart($kunden_id, $produktID, $pay_id);
   
     //$Meldungen = "Produkt wurde zum Warenkorb hinzugefügt.";
   
@@ -214,6 +220,7 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'order') {
                 <form action="" method="post">
                     <input type="hidden" name="aktion" value="order">
                     <input type="hidden" id="kunden_id" name="kunden_id" value="<?= isset($kunden_id) ? htmlspecialchars($kunden_id) : ''; ?>">
+                    <input type="hidden" id="pay_id" name="pay_id" value="<?= isset($pay_id) ? htmlspecialchars($pay_id) : ''; ?>">
                     <input type="hidden" name="ProduktID" value="<?= $a['ProduktID'] ?>">
                     <button type="submit">Bestellen</button>
                 </form>
@@ -235,12 +242,13 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'order') {
         <tr>
             <td><?= htmlspecialchars($a['KundenID']) ?></td>
             <td><?= htmlspecialchars($a['ProduktID']) ?></td>
-            <td><?= htmlspecialchars($a['PayId']) ?></td>
+            <td><?= htmlspecialchars($a['PayID']) ?></td>
             <td><?= htmlspecialchars($a['Anzahl']) ?></td>
             <td>
                 <form action="" method="post">
                     <input type="hidden" name="aktion" value="delete">
                     <input type="hidden" id="kunden_id" name="kunden_id" value="<?= isset($kunden_id) ? htmlspecialchars($kunden_id) : ''; ?>">
+                    <input type="hidden" id="pay_id" name="pay_id" value="<?= isset($pay_id) ? htmlspecialchars($pay_id) : ''; ?>">
                     <input type="hidden" name="ProduktID" value="<?= $a['ProduktID'] ?>">
                     <button type="submit">Löschen</button>
                 </form>
@@ -294,6 +302,14 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'order') {
         <input type="text" id="versand_plz" name="versand_plz" required><br>
         <label for="versand_land">Land:</label><br>
         <input type="text" id="versand_land" name="versand_land" required><br><br>
+
+        <h3>Zahlungsmethode</h3>
+        <label for="paiid">Zahlungsmethode wählen:</label><br>
+        <select id="paiid" name="paiid" required>
+        <?php foreach ($payments as $payment): ?>
+          <option value="<?= htmlspecialchars($payment['PayID']) ?>"><?= htmlspecialchars($payment['ZM']) ?></option>
+        <?php endforeach; ?>
+        </select><br><br>
         
         <input type="submit" value="Kunden hinzufügen">
     </form>
@@ -359,6 +375,7 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'order') {
   <footer>
     <div class="footer-content">
         <p>Kunden-ID: <?= isset($kunden_id) ? htmlspecialchars($kunden_id) : 'Nicht verfügbar'; ?></p>
+        <p>Pay-ID: <?= isset($pay_id) ? htmlspecialchars($pay_id) : 'Nicht verfügbar'; ?></p>
         <p>Meldungen: <?= isset($Meldungen) ? htmlspecialchars($Meldungen) : 'Keine Meldungen'; ?></p>
     </div>
 </footer>

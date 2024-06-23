@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 20. Jun 2024 um 11:14
+-- Erstellungszeit: 23. Jun 2024 um 17:49
 -- Server-Version: 10.4.32-MariaDB
 -- PHP-Version: 8.2.12
 
@@ -20,6 +20,34 @@ SET time_zone = "+00:00";
 --
 -- Datenbank: `warehousedb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `adressen`
+--
+
+CREATE TABLE `adressen` (
+  `AdressID` int(11) NOT NULL,
+  `KundenID` int(11) DEFAULT NULL,
+  `Strasse` varchar(255) NOT NULL,
+  `Stadt` varchar(255) NOT NULL,
+  `Plz` varchar(10) NOT NULL,
+  `Land` varchar(255) NOT NULL,
+  `AdressTyp` enum('Rechnung','Versand') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `adressen`
+--
+
+INSERT INTO `adressen` (`AdressID`, `KundenID`, `Strasse`, `Stadt`, `Plz`, `Land`, `AdressTyp`) VALUES
+(13, 10, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Rechnung'),
+(14, 10, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Versand'),
+(15, 11, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Rechnung'),
+(16, 11, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Versand'),
+(17, 12, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Rechnung'),
+(18, 12, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Versand');
 
 -- --------------------------------------------------------
 
@@ -52,17 +80,18 @@ INSERT INTO `kategorie` (`KategorieID`, `KategorieN`) VALUES
 CREATE TABLE `kunden` (
   `KundenID` int(11) NOT NULL,
   `KundenName` varchar(50) DEFAULT NULL,
-  `Passwort` varchar(50) DEFAULT NULL
+  `Passwort` varchar(50) DEFAULT NULL,
+  `PayID` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Daten für Tabelle `kunden`
 --
 
-INSERT INTO `kunden` (`KundenID`, `KundenName`, `Passwort`) VALUES
-(1, 'Leon', 'Rechts'),
-(2, 'Lukas', 'Mitte'),
-(3, 'Fabian', 'Links');
+INSERT INTO `kunden` (`KundenID`, `KundenName`, `Passwort`, `PayID`) VALUES
+(10, 'Fabian', 'Fabian', '2'),
+(11, 'Fabian', 'Fabian', '2'),
+(12, 'Fabian', 'Fabian', '2');
 
 -- --------------------------------------------------------
 
@@ -104,10 +133,19 @@ INSERT INTO `lager` (`ProduktID`, `Produkt`, `Preis`, `KategorieID`) VALUES
 --
 
 CREATE TABLE `warenkorb` (
-  `KundenID` int(11) DEFAULT NULL,
-  `Ware` int(11) DEFAULT NULL,
-  `PayID` int(11) DEFAULT NULL
+  `KundenID` int(11) NOT NULL,
+  `ProduktID` int(11) NOT NULL,
+  `PayID` int(11) DEFAULT NULL,
+  `Anzahl` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `warenkorb`
+--
+
+INSERT INTO `warenkorb` (`KundenID`, `ProduktID`, `PayID`, `Anzahl`) VALUES
+(12, 1, 2, 1),
+(12, 2, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -135,6 +173,13 @@ INSERT INTO `zahlung` (`PayID`, `ZM`) VALUES
 --
 
 --
+-- Indizes für die Tabelle `adressen`
+--
+ALTER TABLE `adressen`
+  ADD PRIMARY KEY (`AdressID`),
+  ADD KEY `KundenID` (`KundenID`);
+
+--
 -- Indizes für die Tabelle `kategorie`
 --
 ALTER TABLE `kategorie`
@@ -157,9 +202,8 @@ ALTER TABLE `lager`
 -- Indizes für die Tabelle `warenkorb`
 --
 ALTER TABLE `warenkorb`
-  ADD KEY `KundenID` (`KundenID`),
-  ADD KEY `Ware` (`Ware`),
-  ADD KEY `PayID` (`PayID`);
+  ADD PRIMARY KEY (`ProduktID`),
+  ADD KEY `KundenID` (`KundenID`);
 
 --
 -- Indizes für die Tabelle `zahlung`
@@ -172,6 +216,12 @@ ALTER TABLE `zahlung`
 --
 
 --
+-- AUTO_INCREMENT für Tabelle `adressen`
+--
+ALTER TABLE `adressen`
+  MODIFY `AdressID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT für Tabelle `kategorie`
 --
 ALTER TABLE `kategorie`
@@ -181,7 +231,7 @@ ALTER TABLE `kategorie`
 -- AUTO_INCREMENT für Tabelle `kunden`
 --
 ALTER TABLE `kunden`
-  MODIFY `KundenID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `KundenID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT für Tabelle `lager`
@@ -200,6 +250,12 @@ ALTER TABLE `zahlung`
 --
 
 --
+-- Constraints der Tabelle `adressen`
+--
+ALTER TABLE `adressen`
+  ADD CONSTRAINT `adressen_ibfk_1` FOREIGN KEY (`KundenID`) REFERENCES `kunden` (`KundenID`);
+
+--
 -- Constraints der Tabelle `lager`
 --
 ALTER TABLE `lager`
@@ -210,7 +266,7 @@ ALTER TABLE `lager`
 --
 ALTER TABLE `warenkorb`
   ADD CONSTRAINT `warenkorb_ibfk_1` FOREIGN KEY (`KundenID`) REFERENCES `kunden` (`KundenID`),
-  ADD CONSTRAINT `warenkorb_ibfk_2` FOREIGN KEY (`Ware`) REFERENCES `kategorie` (`KategorieID`),
+  ADD CONSTRAINT `warenkorb_ibfk_2` FOREIGN KEY (`ProduktID`) REFERENCES `kategorie` (`KategorieID`),
   ADD CONSTRAINT `warenkorb_ibfk_3` FOREIGN KEY (`PayID`) REFERENCES `zahlung` (`PayID`);
 COMMIT;
 
