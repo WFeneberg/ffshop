@@ -42,7 +42,7 @@ if (isset($_POST['KundenName'], $_POST['Passwort'])) {
 	]);
 	
 	
-	echo "Kunde und Adressen hinzugefügt.";
+	$Meldungen =  "Kunde und Adressen hinzugefügt.";
 	
 }
 
@@ -57,6 +57,9 @@ if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
 	$stmt->execute(['LoginKundenName' => $_POST['LoginKundenName']]);
 	
 	$user = $stmt->fetch();
+  if ($user === false) {
+    $Meldungen = "Benutzername nicht gefunden oder falsches Passwort.";
+} else {
 	// 	Benutzerdaten aus der Datenbank abrufen
 	$gespeichertesPasswort = $user['Passwort'];
 	// 	Das in der Datenbank gespeicherte Passwort
@@ -70,6 +73,7 @@ if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
 		$Meldungen =  "Anmeldung fehlgeschlagen.";
 		
 	}
+}
 	
 }
 
