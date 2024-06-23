@@ -1,36 +1,141 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Mein Webshop</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        nav { background-color: #f0f0f0; padding: 10px; }
-        nav a { margin-right: 15px; text-decoration: none; color: #333; }
-        footer { background-color: #f0f0f0; padding: 10px; text-align: center; margin-top: 20px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Computer Fakeshop</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('./asset/Hintergrund.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      color: #FFFFFF;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      /* oder 'absolute', falls 'fixed' nicht gewünscht ist */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('./asset/Hintergrund.jpg') no-repeat center center fixed;
+      background-size: cover;
+      z-index: -1;
+      opacity: 0.9;
+    }
+
+    nav#menu {
+      background-color: blue;
+      /* Setzt die Hintergrundfarbe auf Blau */
+      width: 100%;
+      /* Stellt sicher, dass das Menü die volle Breite einnimmt */
+      position: fixed;
+      /* Fixiert das Menü am oberen Rand */
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      /* Stellt sicher, dass das Menü über anderen Elementen liegt */
+    }
+
+    nav#menu ul {
+      list-style-type: none;
+      /* Entfernt die Bulletpoints von der Liste */
+      text-align: center;
+      /* Zentriert die Listenelemente */
+    }
+
+    nav#menu li {
+      display: inline;
+      /* Zeigt die Listenelemente nebeneinander an */
+      margin-right: 20px;
+      /* Fügt einen rechten Abstand zwischen den Listenelementen hinzu */
+    }
+
+    nav#menu a {
+      color: white;
+      /* Setzt die Textfarbe der Links auf Weiß */
+      text-decoration: none;
+      /* Entfernt die Unterstreichung der Links */
+    }
+  </style>
 </head>
+
 <body>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="artikel.php">Artikel</a>
-        <a href="kunden.html">Kunden</a>
-        <a href="register.html">Registrieren</a>
-        <a href="login.html">Login</a>
-    </nav>
 
-    <main>
-        <h1>Willkommen zu unserem Webshop!</h1>
-        <p>Hier finden Sie eine Vielzahl von Produkten zu tollen Preisen.</p>
-        <section>
-            <h2>Benutzerverwaltung</h2>
-            <p>Verwalten Sie Ihr Konto oder loggen Sie sich ein, um unsere Produkte zu kaufen.</p>
-            <a href="register.html">Registrieren</a> | <a href="login.html">Login</a>
-        </section>
-    </main>
+  <nav id="menu">
+    <ul>
+      <li><a href="#" onclick="showHome()">Home</a></li>
+      <li><a href="#" onclick="showWarenkorb()">Warenkorb</a></li>
+      <li><a href="#" onclick="showKonto()">Konto</a></li>
+      <li><a href="#" onclick="showLogin()">Anmeldung</a></li>
+    </ul>
+  </nav>
 
-    <footer>
-        <p>© 2024 Mein Webshop</p>
-    </footer>
-</body>
-</html>
+  <div id="content">
+    <div id="home">
+      <h1>Willkommen auf der Home-Seite!</h1>
+    </div>
+    <div id="warenkorb">
+      <h1>Hier ist Ihr Warenkorb</h1>
+    </div>
+    <div id="konto">
+      <h1>Hier können Konto auswählen</h1>
+    </div>
+    <div id="login">
+      <h1>Hier können login auswählen</h1>
+    </div>
+  </div>
+
+  <script>
+    function updatemenu() {
+      if (document.getElementById('responsive-menu').checked) {
+        document.getElementById('menu').style.borderBottomRightRadius = '0';
+        document.getElementById('menu').style.borderBottomLeftRadius = '0';
+      } else {
+        document.getElementById('menu').style.borderRadius = '10px';
+      }
+    }
+
+    function showHome() {
+      hideAll();
+      document.getElementById('home').style.display = 'block';
+    }
+
+    function showKonto() {
+      hideAll();
+      document.getElementById('konto').style.display = 'block';
+    }
+
+    function showWarenkorb() {
+      hideAll();
+      document.getElementById('warenkorb').style.display = 'block';
+    }
+
+    function showLogin() {
+      hideAll();
+      document.getElementById('login').style.display = 'block';
+    }
+
+    function hideAll() {
+      var sections = document.querySelectorAll('#content > div');
+      sections.forEach(function(section) {
+        section.style.display = 'none';
+      });
+    }
+
+    function login(event) {
+      event.preventDefault();
+      // Hier können Sie die Authentifizierung hinzufügen
+      // Wenn erfolgreich, wird die Anmeldeseite ausgeblendet und die Home-Seite sowie das Menü angezeigt
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('menu').style.display = 'block';
+      document.getElementById('content').style.display = 'block';
+      showHome();
+    }
+  </script>
+</body
