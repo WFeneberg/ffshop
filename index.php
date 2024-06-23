@@ -60,7 +60,7 @@ if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
 	// 	Beim Anmelden
 	$eingegebenesPasswort = $_POST['LoginPasswort'];
 	// 	Das vom Benutzer beim Anmelden eingegebene Passwort
-	$stmt = $pdo->prepare("Select KundenID, Passwort FROM kunden WHERE KundenName = :LoginKundenName");
+	$stmt = $pdo->prepare("Select KundenID, Passwort, PayID FROM kunden WHERE KundenName = :LoginKundenName");
 	
 	$stmt->execute(['LoginKundenName' => $_POST['LoginKundenName']]);
 	
@@ -93,7 +93,7 @@ function saveToCart($kundenID, $produktID, $pay_id) {
   $stmt = $pdo->prepare("SELECT * FROM warenkorb WHERE KundenID  = :KundenID  AND ProduktID = :produktID");
   $stmt->execute(['KundenID' => $kundenID, 'produktID' => $produktID]);
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
-  //var_dump($result['anzahl']);
+  var_dump($result);
   //$Meldungen = $result;
   if ($result) {
     // Wenn das Produkt bereits vorhanden ist, erhöhe die Anzahl
