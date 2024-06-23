@@ -84,15 +84,6 @@ CREATE TABLE `kunden` (
   `PayID` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Daten für Tabelle `kunden`
---
-
-INSERT INTO `kunden` (`KundenID`, `KundenName`, `Passwort`, `PayID`) VALUES
-(10, 'Fabian', 'Fabian', '2'),
-(11, 'Fabian', 'Fabian', '2'),
-(12, 'Fabian', 'Fabian', '2');
-
 -- --------------------------------------------------------
 
 --
@@ -138,14 +129,6 @@ CREATE TABLE `warenkorb` (
   `PayID` int(11) DEFAULT NULL,
   `Anzahl` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Daten für Tabelle `warenkorb`
---
-
-INSERT INTO `warenkorb` (`KundenID`, `ProduktID`, `PayID`, `Anzahl`) VALUES
-(12, 1, 2, 1),
-(12, 2, 2, 1);
 
 -- --------------------------------------------------------
 
