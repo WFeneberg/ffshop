@@ -9,9 +9,7 @@ $pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
 
 $artikel = $pdo->query("SELECT * FROM lager")->fetchAll();
 
-$warenkorb = $pdo->query("SELECT warenkorb.*, lager.Produkt, lager.Preis, warenkorb.Anzahl * lager.Preis AS Gesamtpreis
-                          FROM warenkorb
-                          JOIN lager ON warenkorb.ProduktID = lager.ProduktID;")->fetchAll();
+$warenkorb = $pdo->query("SELECT warenkorb.*, lager.Produkt, kategorie.KategorieN, lager.Preis, warenkorb.Anzahl * lager.Preis AS Gesamtpreis FROM warenkorb JOIN lager ON warenkorb.ProduktID = lager.ProduktID JOIN kategorie ON lager.KategorieID = kategorie.KategorieID;")->fetchAll();
 
 $payments = $pdo->query("SELECT * FROM zahlung")->fetchAll();
 
@@ -393,7 +391,7 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'custdelete') {
             <th>Kunde</th>
             <th>ProduktID</th>
             <th>Produkt</th>
-            <th>Zahlungsart</th>
+            <th>Kategorie</th>
             <th>Anzahl</th>
             <th>Preis</th>
             <th>Gesamtpreis</th>
@@ -403,8 +401,8 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'custdelete') {
         <tr>
             <td><?= htmlspecialchars($a['KundenID']) ?></td>
             <td><?= htmlspecialchars($a['ProduktID']) ?></td>
-            <td><?= htmlspecialchars($a['PayID']) ?></td>
             <td><?= htmlspecialchars($a['Produkt']) ?></td>
+            <td><?= htmlspecialchars($a['KategorieN']) ?></td>
             <td><?= htmlspecialchars($a['Anzahl']) ?></td>
             <td><?= htmlspecialchars($a['Preis']) ?></td>
             <td><?= htmlspecialchars($a['Gesamtpreis']) ?></td>
