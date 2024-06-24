@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 23. Jun 2024 um 17:49
+-- Erstellungszeit: 24. Jun 2024 um 20:35
 -- Server-Version: 10.4.32-MariaDB
 -- PHP-Version: 8.2.12
 
@@ -42,10 +42,6 @@ CREATE TABLE `adressen` (
 --
 
 INSERT INTO `adressen` (`AdressID`, `KundenID`, `Strasse`, `Stadt`, `Plz`, `Land`, `AdressTyp`) VALUES
-(13, 10, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Rechnung'),
-(14, 10, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Versand'),
-(15, 11, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Rechnung'),
-(16, 11, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Versand'),
 (17, 12, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Rechnung'),
 (18, 12, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Versand');
 
@@ -83,6 +79,13 @@ CREATE TABLE `kunden` (
   `Passwort` varchar(50) DEFAULT NULL,
   `PayID` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `kunden`
+--
+
+INSERT INTO `kunden` (`KundenID`, `KundenName`, `Passwort`, `PayID`) VALUES
+(12, 'Fabian', 'Fabian', '2');
 
 -- --------------------------------------------------------
 
@@ -129,6 +132,15 @@ CREATE TABLE `warenkorb` (
   `PayID` int(11) DEFAULT NULL,
   `Anzahl` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `warenkorb`
+--
+
+INSERT INTO `warenkorb` (`KundenID`, `ProduktID`, `PayID`, `Anzahl`) VALUES
+(12, 1, 2, 12),
+(12, 2, 2, 1),
+(12, 3, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -202,7 +214,7 @@ ALTER TABLE `zahlung`
 -- AUTO_INCREMENT für Tabelle `adressen`
 --
 ALTER TABLE `adressen`
-  MODIFY `AdressID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `AdressID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT für Tabelle `kategorie`
@@ -214,7 +226,7 @@ ALTER TABLE `kategorie`
 -- AUTO_INCREMENT für Tabelle `kunden`
 --
 ALTER TABLE `kunden`
-  MODIFY `KundenID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `KundenID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT für Tabelle `lager`
