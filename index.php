@@ -357,7 +357,7 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'custdelete') {
   <div id="content">
   
     <div id="home">
-      <h1>Willkommen auf der Home-Seite!</h1>
+      <h1>Willkommen!</h1>
       <h2>Vorhandene Artikel</h2>
     <table>
         <tr>
