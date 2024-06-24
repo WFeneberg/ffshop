@@ -191,60 +191,154 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'custdelete') {
   <title>Computer Fakeshop</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Roboto', sans-serif;
       background: url('./asset/Hintergrund.jpg') no-repeat center center fixed;
       background-size: cover;
       margin: 0;
       padding: 0;
-      color: #FFFFFF;
+      color: #333333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     body::before {
       content: "";
       position: fixed;
-      /* oder 'absolute', falls 'fixed' nicht gewünscht ist */
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('./asset/Hintergrund.jpg') no-repeat center center fixed;
-      background-size: cover;
+      background: rgba(0, 0, 0, 0.6);
       z-index: -1;
-      opacity: 0.9;
     }
 
     nav#menu {
-      background-color: blue;
-      /* Setzt die Hintergrundfarbe auf Blau */
+      background-color: #333333;
       width: 100%;
-      /* Stellt sicher, dass das Menü die volle Breite einnimmt */
       position: fixed;
-      /* Fixiert das Menü am oberen Rand */
       top: 0;
       left: 0;
       z-index: 1000;
-      /* Stellt sicher, dass das Menü über anderen Elementen liegt */
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
     }
 
     nav#menu ul {
       list-style-type: none;
-      /* Entfernt die Bulletpoints von der Liste */
-      text-align: center;
-      /* Zentriert die Listenelemente */
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
     }
 
     nav#menu li {
       display: inline;
-      /* Zeigt die Listenelemente nebeneinander an */
-      margin-right: 20px;
-      /* Fügt einen rechten Abstand zwischen den Listenelementen hinzu */
     }
 
     nav#menu a {
-      color: white;
-      /* Setzt die Textfarbe der Links auf Weiß */
+      color: #FFFFFF;
       text-decoration: none;
-      /* Entfernt die Unterstreichung der Links */
+      padding: 10px 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    nav#menu a:hover {
+      background-color: #555555;
+      border-radius: 5px;
+    }
+
+    #content {
+      margin-top: 80px;
+      width: 80%;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2, h3 {
+      color: #333333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #CCCCCC;
+      text-align: left;
+    }
+
+    th {
+      background-color: #F2F2F2;
+    }
+
+    button {
+      background-color: #4660DC;
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #333333;
+    }
+
+    .custom_input {
+      display: flex;
+      align-items: center;
+      position: relative;
+      max-width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .input {
+      font-size: 18px;
+      padding: 10px 15px;
+      width: 100%;
+      padding-left: 45px;
+      outline: none;
+      background: #FFFFFF;
+      color: #000000;
+      border: 1px solid #C4D1EB;
+      border-radius: 5px;
+      box-shadow: 3px 3px 2px 0px #E2E2E2;
+      transition: .3s ease;
+    }
+
+    .input:focus {
+      background: #F2F2F2;
+      border: 1px solid #5A7EC7;
+      border-radius: 10px;
+    }
+
+    .input::placeholder {
+      color: #DDDDDD;
+    }
+
+    .svg_icon {
+      position: absolute;
+      left: 15px;
+      fill: #4660DC;
+      width: 24px;
+      height: 24px;
+    }
+
+    footer {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      text-align: center;
+      background-color: #333333;
+      color: #FFFFFF;
     }
   </style>
 </head>
