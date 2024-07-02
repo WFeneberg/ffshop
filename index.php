@@ -7,7 +7,7 @@ global $Meldungen;
 $pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
 // Verbindung zur Datenbank
 
-$artikel = $pdo->query("SELECT * FROM lager")->fetchAll();
+$artikel = $pdo->query("SELECT lager.*, kategorie.KategorieN FROM lager JOIN kategorie ON lager.KategorieID = kategorie.KategorieID;")->fetchAll();
 
 $warenkorb = $pdo->query("SELECT warenkorb.*, lager.Produkt, kategorie.KategorieN, lager.Preis, warenkorb.Anzahl * lager.Preis AS Gesamtpreis FROM warenkorb JOIN lager ON warenkorb.ProduktID = lager.ProduktID JOIN kategorie ON lager.KategorieID = kategorie.KategorieID;")->fetchAll();
 
@@ -330,6 +330,10 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'custdelete') {
       height: 24px;
     }
 
+    .white-text {
+    color: white;
+    }
+
     footer {
       margin-top: 20px;
       padding: 10px;
@@ -349,6 +353,9 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'custdelete') {
       <!--<li><a href="#" onclick="showKonto()">Konto</a></li>-->
       <li><a href="#" onclick="showLogin()">Anmeldung</a></li>
       <li><a href="#" onclick="showAdmin()">Verwaltung</a></li>
+      <?php if (!isset($kunden_id)): ?>
+      <li class="white-text">Bitte anmelden</li>
+      <?php endif; ?>
     </ul>
   </nav>
 
@@ -370,14 +377,16 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'custdelete') {
             <td><?= htmlspecialchars($a['ProduktID']) ?></td>
             <td><?= htmlspecialchars($a['Produkt']) ?></td>
             <td><?= htmlspecialchars($a['Preis']) ?></td>
-            <td><?= htmlspecialchars($a['KategorieID']) ?></td>
+            <td><?= htmlspecialchars($a['KategorieN']) ?></td>
             <td>
                 <form action="" method="post">
                     <input type="hidden" name="aktion" value="order">
                     <input type="hidden" id="kunden_id" name="kunden_id" value="<?= isset($kunden_id) ? htmlspecialchars($kunden_id) : ''; ?>">
                     <input type="hidden" id="pay_id" name="pay_id" value="<?= isset($pay_id) ? htmlspecialchars($pay_id) : ''; ?>">
                     <input type="hidden" name="ProduktID" value="<?= $a['ProduktID'] ?>">
+                    <?php if (isset($kunden_id)): ?>
                     <button type="submit">Bestellen</button>
+                    <?php endif; ?>
                 </form>
             </td>
         </tr>
