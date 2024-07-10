@@ -29,7 +29,7 @@ $warenkorb = $pdo->query("SELECT warenkorb.*, lager.Produkt, kategorie.Kategorie
             <td><?= htmlspecialchars($a['Preis']) ?></td>
             <td><?= htmlspecialchars($a['Gesamtpreis']) ?></td>
             <td>
-                <form action="" method="post">
+                <form action="cartdelete.php" method="post">
                     <input type="hidden" name="aktion" value="delete">
                     <input type="hidden" id="kunden_id" name="kunden_id" value="<?= isset($kunden_id) ? htmlspecialchars($kunden_id) : ''; ?>">
                     <input type="hidden" id="pay_id" name="pay_id" value="<?= isset($pay_id) ? htmlspecialchars($pay_id) : ''; ?>">

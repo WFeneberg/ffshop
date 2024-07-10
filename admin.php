@@ -18,7 +18,7 @@ $alleKunden = $pdo->query("SELECT * FROM kunden")->fetchAll();
             <td><?= htmlspecialchars($a['KundenID']) ?></td>
             <td><?= htmlspecialchars($a['KundenName']) ?></td>
             <td>
-                <form action="" method="post">
+                <form action="admindeleted.php" method="post">
                     <input type="hidden" name="aktion" value="custdelete">
                     <input type="hidden" id="kunden_id" name="kunden_id" value="<?= isset($a['KundenID']) ? htmlspecialchars($a['KundenID']) : ''; ?>">
                     <button type="submit">Löschen</button>
