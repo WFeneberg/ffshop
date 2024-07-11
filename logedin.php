@@ -3,9 +3,6 @@ $pageTitle = 'Anmelden';
 $page = 'logedin';
 include './inc/header.inc.php';
 
-$pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
-// Verbindung zur Datenbank
-
 if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
 
     // 	Beim Anmelden
@@ -26,14 +23,15 @@ if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
         $pay_id = $user['PayID'];
         // 	Die Kunden-ID des Benutzers
         if ($eingegebenesPasswort === $gespeichertesPasswort) {
-            echo "Anmeldung erfolgreich.";
+            echo "<span style='color: white;'>Anmeldung erfolgreich.</span><br>";
 
-            $t = time() + 60 * 60 * 24 * 365;
+            
             setcookie("KundenID", $kunden_id, $t);
             setcookie("PayID", $pay_id, $t);
         } else {
+            $t = time() + 60 * 60 * 24 * 365;
+            echo "<span style='color: white;'>Anmeldung fehlgeschlagen.</span><br>";
 
-            echo "Anmeldung fehlgeschlagen.";
             setcookie("KundenID", '', $t);
             setcookie("PayID", '', $t);
         }

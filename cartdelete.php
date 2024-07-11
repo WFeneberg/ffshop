@@ -3,7 +3,6 @@ $pageTitle = 'Administration';
 $page = 'shoppingdelete';
 include './inc/header.inc.php';
 
-$pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
 
 function deletefromCart($kundenID, $produktID) {
     // Verbindung zur Datenbank
@@ -22,9 +21,10 @@ function deletefromCart($kundenID, $produktID) {
   
     deletefromCart($kunden_id, $produktID);
     
-    echo "Produkt wurde aus dem Warenkorb entfernt.";
+    echo "<span style='color: white;'>Produkt wurde aus dem Warenkorb entfernt.</span><br>";
     
   }
 ?>
-
+<button onclick="window.location.href='cart.php'">Zurück</button>
+<button onclick="window.location.href='index.php'">Start-Seite</button>
 <?php include './inc/footer.inc.php'; ?>

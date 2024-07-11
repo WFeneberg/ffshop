@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 24. Jun 2024 um 20:35
+-- Erstellungszeit: 11. Jul 2024 um 23:14
 -- Server-Version: 10.4.32-MariaDB
 -- PHP-Version: 8.2.12
 
@@ -36,14 +36,6 @@ CREATE TABLE `adressen` (
   `Land` varchar(255) NOT NULL,
   `AdressTyp` enum('Rechnung','Versand') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Daten für Tabelle `adressen`
---
-
-INSERT INTO `adressen` (`AdressID`, `KundenID`, `Strasse`, `Stadt`, `Plz`, `Land`, `AdressTyp`) VALUES
-(17, 12, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Rechnung'),
-(18, 12, 'Schleiserweg 20', 'Seeg', '87637', 'Deutschland', 'Versand');
 
 -- --------------------------------------------------------
 
@@ -79,13 +71,6 @@ CREATE TABLE `kunden` (
   `Passwort` varchar(50) DEFAULT NULL,
   `PayID` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Daten für Tabelle `kunden`
---
-
-INSERT INTO `kunden` (`KundenID`, `KundenName`, `Passwort`, `PayID`) VALUES
-(12, 'Fabian', 'Fabian', '2');
 
 -- --------------------------------------------------------
 
@@ -132,15 +117,6 @@ CREATE TABLE `warenkorb` (
   `PayID` int(11) DEFAULT NULL,
   `Anzahl` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Daten für Tabelle `warenkorb`
---
-
-INSERT INTO `warenkorb` (`KundenID`, `ProduktID`, `PayID`, `Anzahl`) VALUES
-(12, 1, 2, 12),
-(12, 2, 2, 1),
-(12, 3, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -198,7 +174,8 @@ ALTER TABLE `lager`
 --
 ALTER TABLE `warenkorb`
   ADD PRIMARY KEY (`ProduktID`),
-  ADD KEY `KundenID` (`KundenID`);
+  ADD KEY `KundenID` (`KundenID`),
+  ADD KEY `warenkorb_ibfk_3` (`PayID`);
 
 --
 -- Indizes für die Tabelle `zahlung`
@@ -214,7 +191,7 @@ ALTER TABLE `zahlung`
 -- AUTO_INCREMENT für Tabelle `adressen`
 --
 ALTER TABLE `adressen`
-  MODIFY `AdressID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `AdressID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT für Tabelle `kategorie`
@@ -226,7 +203,7 @@ ALTER TABLE `kategorie`
 -- AUTO_INCREMENT für Tabelle `kunden`
 --
 ALTER TABLE `kunden`
-  MODIFY `KundenID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `KundenID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT für Tabelle `lager`

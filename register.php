@@ -3,9 +3,6 @@ $pageTitle = 'Registrieren';
 $page = 'register';
 include './inc/header.inc.php'; 
 
-$pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
-// Verbindung zur Datenbank
-
 $payments = $pdo->query("SELECT * FROM zahlung")->fetchAll();
 
 

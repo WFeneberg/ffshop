@@ -4,6 +4,8 @@
     if(isset($_COOKIE["PayID"]))
         $pay_id =  $_COOKIE["PayID"];
 
+    $pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
+
 ?><
 
 !DOCTYPE html>

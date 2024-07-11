@@ -3,9 +3,6 @@ $pageTitle = 'Warenkorb';
 $page = 'shopping';
 include './inc/header.inc.php'; 
 
-$pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
-// Verbindung zur Datenbank
-
 $warenkorb = $pdo->query("SELECT warenkorb.*, lager.Produkt, kategorie.KategorieN, lager.Preis, warenkorb.Anzahl * lager.Preis AS Gesamtpreis FROM warenkorb JOIN lager ON warenkorb.ProduktID = lager.ProduktID JOIN kategorie ON lager.KategorieID = kategorie.KategorieID;")->fetchAll();
 ?>
  <table>

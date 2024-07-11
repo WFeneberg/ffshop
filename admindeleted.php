@@ -3,8 +3,6 @@ $pageTitle = 'Administration';
 $page = 'admindeleted';
 include './inc/header.inc.php';
 
-$pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
-
 function deletecustomer($kundenID)
 {
   $pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');

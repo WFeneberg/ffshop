@@ -3,8 +3,6 @@ $pageTitle = 'Administration';
 $page = 'shoppingdelete';
 include './inc/header.inc.php';
 
-$pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
-
 function saveToCart($kundenID, $produktID, $pay_id) {
   $pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
 // Verbindung zur Datenbank
@@ -34,10 +32,11 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'order') {
 
   saveToCart($kunden_id, $produktID, $pay_id);
   
-  echo "Produkt wurde zum Warenkorb hinzugefügt.";
+  echo "<span style='color: white;'>Produkt wurde zum Warenkorb hinzugefügt.</span><br>";
   
 }
 
 ?>
-
+<button onclick="window.location.href='index.php'">Zurück</button>
+<button onclick="window.location.href='cart.php'">Wartenkorb</button>
 <?php include './inc/footer.inc.php'; ?>

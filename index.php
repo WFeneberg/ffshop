@@ -3,9 +3,6 @@ $pageTitle = 'Vorhandene Artikel';
 $page = 'index';
 include './inc/header.inc.php';
 
-$pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
-// Verbindung zur Datenbank
-
 $artikel = $pdo->query("SELECT lager.*, kategorie.KategorieN FROM lager JOIN kategorie ON lager.KategorieID = kategorie.KategorieID;")->fetchAll();
 ?>
 <table>

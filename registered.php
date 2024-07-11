@@ -3,8 +3,6 @@ $pageTitle = 'Administration';
 $page = 'registered';
 include './inc/header.inc.php'; 
 
-$pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
-
 if (isset($_POST['KundenName'], $_POST['Passwort'], $_POST['paiid'])) {
 
     $stmt = $pdo->prepare("SELECT * FROM kunden WHERE KundenName  = :KundenName");

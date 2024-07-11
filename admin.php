@@ -3,7 +3,7 @@ $pageTitle = 'Administration';
 $page = 'admin';
 include './inc/header.inc.php'; 
 
-$pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
+//$pdo = new PDO('mysql:host=localhost;dbname=warehousedb', 'root', 'root');
 // Verbindung zur Datenbank
 
 $alleKunden = $pdo->query("SELECT * FROM kunden")->fetchAll();
