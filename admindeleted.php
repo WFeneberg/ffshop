@@ -29,8 +29,8 @@ if (isset($_POST['aktion']) && $_POST['aktion'] === 'custdelete') {
 
   deleteCustomer($kunden_id);
 
-  echo "Kunde " . $kunden_id . " wurde gelöscht";
+  echo "<span style='color: white;'>Kunde " . $kunden_id . " wurde gelöscht</span><br>";
 }
 ?>
-
+<button onclick="window.location.href='admin.php'">Zurück zur Admin-Seite</button>
 <?php include './inc/footer.inc.php'; ?>

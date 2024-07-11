@@ -44,12 +44,12 @@ if (isset($_POST['KundenName'], $_POST['Passwort'], $_POST['paiid'])) {
         ]);
       
       
-        $Meldungen =  "Kunde und Adressen hinzugefügt.";
+         echo "<span style='color: white;'>Kunde und Adressen hinzugefügt.</span><br>";
     } else {
-      $Meldungen = "Kunde existiert bereits.";
+       echo "<span style='color: white;'>Kunde existiert bereits.</span><br>";
     }
   }
 ?>
-
-
+<button onclick="window.location.href='index.php'">Start-Seite</button>
+<button onclick="window.location.href='admin.php'">Admin-Seite</button>
 <?php include './inc/footer.inc.php'; ?>
