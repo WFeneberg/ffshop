@@ -26,10 +26,16 @@ if (isset($_POST['LoginKundenName'], $_POST['LoginPasswort'])) {
         $pay_id = $user['PayID'];
         // 	Die Kunden-ID des Benutzers
         if ($eingegebenesPasswort === $gespeichertesPasswort) {
-            $Meldungen = "Anmeldung erfolgreich.";
+            echo "Anmeldung erfolgreich.";
+
+            $t = time() + 60 * 60 * 24 * 365;
+            setcookie("KundenID", $kunden_id, $t);
+            setcookie("PayID", $pay_id, $t);
         } else {
 
-            $Meldungen =  "Anmeldung fehlgeschlagen.";
+            echo "Anmeldung fehlgeschlagen.";
+            setcookie("KundenID", '', $t);
+            setcookie("PayID", '', $t);
         }
     }
 }

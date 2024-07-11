@@ -1,4 +1,12 @@
-<!DOCTYPE html>
+<?php 
+    if(isset($_COOKIE["KundenID"]))
+        $kunden_id =  $_COOKIE["KundenID"];
+    if(isset($_COOKIE["PayID"]))
+        $pay_id =  $_COOKIE["PayID"];
+
+?><
+
+!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -12,13 +20,23 @@
     <header>
         <h1>>Computer Fakeshop<</h1>
 
-        <nav>
-            <a <?php if(!empty($page) && $page === 'index'):?> style="background-color: red;" <?php endif; ?> href="./">Startseite</a>
-            <a <?php if(!empty($page) && $page === 'shopping'):?> style="background-color: blue;" <?php endif; ?> href="cart.php">Warenkorb</a>
-            <a <?php if(!empty($page) && $page === 'login'):?> style="background-color: green;" <?php endif; ?>href="login.php">Anmelden</a>
-            <a <?php if(!empty($page) && $page === 'register'):?> style="background-color: yellow;" <?php endif; ?>href="register.php">Registrieren</a>
-            <a <?php if(!empty($page) && $page === 'admin'):?> style="background-color: white;" <?php endif; ?>href="admin.php">Administration</a>
-            </nav>
+        <nav  class="nav-container">
+            <form action="./" method="get">
+                <button type="submit" class="nav-button <?php if(!empty($page) && $page === 'index') echo 'active'; ?>">Startseite</button>
+            </form>
+            <form action="cart.php" method="get">
+                <button type="submit" class="nav-button <?php if(!empty($page) && $page === 'shopping') echo 'active'; ?>">Warenkorb</button>
+            </form>
+            <form action="login.php" method="get">
+                <button type="submit" class="nav-button <?php if(!empty($page) && $page === 'login') echo 'active'; ?>">Anmelden</button>
+            </form>
+            <form action="register.php" method="get">
+                <button type="submit" class="nav-button <?php if(!empty($page) && $page === 'register') echo 'active'; ?>">Registrieren</button>
+            </form>
+            <form action="admin.php" method="get">
+                <button type="submit" class="nav-button <?php if(!empty($page) && $page === 'admin') echo 'active'; ?>">Administration</button>
+            </form>
+        </nav>
     </header>
 
     <main>
